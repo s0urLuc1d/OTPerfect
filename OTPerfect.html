@@ -1,0 +1,213 @@
+<head>
+<script>
+var ONE = [
+"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"
+]
+
+var TWO = [
+"b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","a"
+]
+
+var THREE = [
+"c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","a","b"
+]
+
+var FOUR = [
+"d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","a","b","c"
+]
+
+var FIVE = [
+"e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","a","b","c","d"
+]
+
+var SIX = [
+"f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","a","b","c","d","e"
+]
+
+var SEVEN = [
+"g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","a","b","c","d","e","f"
+]
+
+var EIGHT = [
+"h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","a","b","c","d","e","f","g"
+]
+
+var NINE = [
+"i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","a","b","c","d","e","f","g","h"
+]
+
+var TEN = [
+"j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","a","b","c","d","e","f","g","h","i"
+]
+
+var ELEVEN = [
+"k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","a","b","c","d","e","f","g","h","i","j"
+]
+
+var TWELVE = [
+"l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","a","b","c","d","e","f","g","h","i","j","k"
+]
+
+var THIRTEEN = [
+"m","n","o","p","q","r","s","t","u","v","w","x","y","z","a","b","c","d","e","f","g","h","i","j","k","l"
+]
+
+var FOURTEEN = [
+"n","o","p","q","r","s","t","u","v","w","x","y","z","a","b","c","d","e","f","g","h","i","j","k","l","m"
+]
+
+var FIFTEEN = [
+"o","p","q","r","s","t","u","v","w","x","y","z","a","b","c","d","e","f","g","h","i","j","k","l","m","n"
+]
+
+var SIXTEEN = [
+"p","q","r","s","t","u","v","w","x","y","z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o"
+]
+
+var SEVENTEEN = [
+"q","r","s","t","u","v","w","x","y","z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"
+]
+
+var EIGHTEEN = [
+"r","s","t","u","v","w","x","y","z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q"
+]
+
+var NINETEEN = [
+"s","t","u","v","w","x","y","z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r"
+]
+
+var TWENTY = [
+"t","u","v","w","x","y","z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s"
+]
+
+var TWENTYONE = [
+"u","v","w","x","y","z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t"
+]
+
+var TWENTYTWO = [
+"v","w","x","y","z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u"
+]
+
+var TWENTYTHREE = [
+"w","x","y","z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v"
+]
+
+var TWENTYFOUR = [
+"x","y","z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w"
+]
+
+var TWENTYFIVE = [
+"y","z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x"
+]
+
+var TWENTYSIX = [
+"z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y"
+]
+
+var initialPrivateKey = [];
+
+var key = [];
+
+var partialKeyClientA1 = [];
+
+var partialKeyClientA2 = [];
+
+var partialKeyClientB1 = [];
+
+var partialKeyClientB2 = [];
+
+var HALF_KEY_LENGTH = 50;
+
+var keyData = [ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE,TEN,ELEVEN,TWELVE,THIRTEEN,FOURTEEN,FIFTEEN,SIXTEEN,SEVENTEEN,EIGHTEEN,NINETEEN,TWENTY,TWENTYONE,TWENTYTWO,TWENTYTHREE,TWENTYFOUR,TWENTYFIVE,TWENTYSIX]
+
+var handShakeCompleted = false;
+
+var dataLength = 0;
+
+//This generates half of a key
+//The packet length will be 100 characters; the first half will be the data transferred any relevant signatures or timestamps
+//The second half of the packet will contain a newly genrated half of a key
+function keyGen(x) {
+	key = [];
+	while (x > 0) {
+		key.push(Math.floor(Math.random()*(25)))
+		x--	
+	}	
+	x = 50;
+	return key;
+}
+
+
+//This generates an initial private key which both client/servers would have after the one-time handshake
+//It runs keyGen() twice because two halfs equals one whole key
+function generateInitialKeyData(initialHalfKey) {
+	initialPrivateKey.push(keyGen(HALF_KEY_LENGTH))
+	initialPrivateKey.push(keyGen(HALF_KEY_LENGTH))
+	
+	partialKeyClientB1.push(initialHalfKey)
+	partialKeyClientB1.push(initialHalfKey)
+	
+}
+	
+
+function encrypt(dataSent) {
+	
+	dataSent = dataSent.split('');
+	for (x in dataSent) {
+		
+		
+		
+	}
+
+}
+
+
+function sendPacket(sender) {
+	
+	if (handShakeCompleted){
+		
+	}
+	else if (sender == 1) {
+		
+		generateInitialKeyData(keyGen())
+		
+		encrypt(document.getElementById("peerA").value)
+		
+	
+	}
+	
+}
+
+
+
+</script>
+</head>
+
+<body>
+
+<h1>
+Illustrative Mock-up <br>(just use less than or equal to 50 lowercase letters)
+</h1>
+
+<hr>
+
+Client/Server A<br>
+<textarea rows="5" cols="50" id=peerA>
+</textarea>
+
+<input type="button" value= "Send" id="peerASubmit" onclick="sendPacket(1)">
+
+
+<br>Client/Server B<br>
+<textarea rows="5" cols="50" id="peerB">
+</textarea>
+
+<input type="button" value= "Send" id="peerBSubmit" onclick="sendPacket(2)">
+
+<hr>
+
+<br><br>Packet<br>
+<textarea rows="8" cols="50" id="packetData">
+</textarea>
+
+</body>
